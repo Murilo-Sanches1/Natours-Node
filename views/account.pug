@@ -1,0 +1,63 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`img/icons.svg#icon-${icon}`)
+            | #{text}
+
+block content
+    main.main
+        .user-view
+            nav.user-view__menu
+                ul.side-nav
+                    +navItem('#', 'Configurações', 'settings', true )
+                    +navItem('my-tours', 'Minhas reservas', 'briefcase')
+                    +navItem('#', 'Gerenciar avaliações', 'star')
+                    +navItem('#', 'Cobrança', 'credit-card')
+                
+                - if(user.role === 'admin')
+                    .admin-nav
+                        h5.admin-nav__heading Admin
+                        ul.side-nav
+                            +navItem('#', 'Gerenciar Tours', 'map')
+                            +navItem('#', 'Gerenciar Usuários', 'users')
+                            +navItem('#', 'Gerenciar Avaliações', 'star')
+                            +navItem('#', 'Gerenciar Reservas', 'briefcase')
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Gerenciar conta
+                    //- Sem API
+                    //- form.form.form-user-data(action='/submit-user-data' method='POST' enctype='multipart/form-data')
+                    //- Com API
+                    form.form.form-user-data
+                        .form__group
+                            label.form__label(for='name') Nome
+                            input#name.form__input(type='text', value=`${user.name}`, required, name='name')
+                        .form__group.ma-bt-md
+                            label.form__label(for='email') Endereço de Email
+                            input#email.form__input(type='email', value=`${user.email}`, required, name='email')
+                        .form__group.form__photo-upload
+                            img.form__user-photo(src=`/img/users/multer/${user.photo}`, alt='User photo')
+                            //- a.btn-text(href='') Choose new photo
+                            input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+                            label(for='photo') Atualizar foto
+                        .form__group.right
+                            button.btn.btn--small.btn--green Salvar modificações
+                .line &nbsp;
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Mudar senha
+                    form.form.form-user-password
+                        .form__group
+                            label.form__label(for='password-current') Senha atual
+                            input#password-current.form__input(type='password', placeholder='••••••••', required, minlength='4')
+                        .form__group
+                            label.form__label(for='password') Nova senha
+                            input#password.form__input(type='password', placeholder='••••••••', required, minlength='4')
+                        .form__group.ma-bt-lg
+                            label.form__label(for='password-confirm') Confirmar nova senha
+                            input#password-confirm.form__input(type='password', placeholder='••••••••', required, minlength='4')
+                        .form__group.right
+                            button.btn.btn--small.btn--green.btn--save-password Alterar senha

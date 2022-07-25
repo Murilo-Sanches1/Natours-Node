@@ -1,0 +1,94 @@
+extends base
+include _reviewCard
+
+block append head
+    //- script(src='/js/mapbox.js')
+    link(rel='stylesheet' href='https://unpkg.com/leaflet@1.6.0/dist/leaflet.css')
+    script(src='https://unpkg.com/leaflet@1.6.0/dist/leaflet.js')
+    script(src='/js/leaflet.js' defer)
+    
+
+mixin overviewBox(label, text, icon)
+    .overview-box__detail
+        svg.overview-box__icon
+            use(xlink:href=`/img/icons.svg#icon-${icon}`)
+        span.overview-box__label= label
+        span.overview-box__text= text
+
+block content
+    section.section-header
+        .header__hero
+            .header__hero-overlay &nbsp;
+            img.header__hero-img(src=`/img/tours/${tour.imageCover}`, alt=`${tour.name}`)
+
+        .heading-box
+            h1.heading-primary
+                span= `${tour.name}`
+            .heading-box__group
+                .heading-box__detail
+                    svg.heading-box__icon
+                        use(xlink:href='/img/icons.svg#icon-clock')
+                    span.heading-box__text= `${tour.duration} days`
+                .heading-box__detail
+                    svg.heading-box__icon
+                        use(xlink:href='/img/icons.svg#icon-map-pin')
+                    span.heading-box__text= tour.startLocation.description
+
+    section.section-description
+        .overview-box
+            div
+                .overview-box__group
+                    h2.heading-secondary.ma-bt-lg Fatos rápidos
+                    
+                    - const date = tour.startDates[0].toLocaleString('pt-br', { month: 'long', year: 'numeric' })
+                    +overviewBox('Próxima data', date, 'calendar')
+                    +overviewBox('Dificuldade', tour.difficulty, 'Trending-up')
+                    +overviewBox('Participants', `${tour.maxGroupSize} people`, 'user')
+                    +overviewBox('Avaliação', `${tour.ratingsAverage} / 5`, 'star')
+
+                .overview-box__group
+                    h2.heading-secondary.ma-bt-lg Os seus guias 
+
+                    each guide in tour.guides
+                        .overview-box__detail
+                            img.overview-box__img(src=`/img/users/multer/${guide.photo}`, alt=`${guide.name}`)
+
+                            - if (guide.role === 'lead-guide')
+                                span.overview-box__label Guia líder
+                            - if (guide.role === 'guide')
+                                span.overview-box__label Guia
+                            span.overview-box__text= guide.name
+
+        .description-box
+            h2.heading-secondary.ma-bt-lg= `Sobre - ${tour.name} -`
+
+            - const paragraphs = tour.description.split('\n');
+            each p in paragraphs 
+                p.description__text= p 
+
+    section.section-pictures
+        each img, i in tour.images 
+            .picture-box
+                img.picture-box__img(src=`/img/tours/${img}`, alt=`The Park Camper Tour ${i + 1}`, class=`picture-box__img--${i + 1}`)
+
+    section.section-map
+        #map(data-locations=`${JSON.stringify(tour.locations)}`)
+
+    section.section-reviews
+        .reviews
+            each review in tour.reviews
+                +reviewCard(review)
+
+    section.section-cta
+        .cta
+            .cta__img.cta__img--logo
+                img(src='/img/logo-white.png', alt='Natours logo')
+            img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='Tour picture')
+            img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='Tour picture')
+            .cta__content
+                h2.heading-secondary Você está esperando o que?
+                p.cta__text= `${tour.duration} dias. 1 aventura. Memórias infinitas. Garanta o seu hoje !`
+                if user
+                    button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Reservar viagem !
+                else
+                    a.btn.btn--green.span-all-rows(href='/login') Logar para reservar tour

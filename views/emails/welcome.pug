@@ -1,0 +1,16 @@
+extends baseEmail
+block content
+    p Olá #{firstName},
+        p Bem-vindo a Natours
+        p Somos todos uma grande família aqui, então certifique-se de enviar sua foto de usuário para que possamos conhecê-lo um pouco melhor!
+        table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+            tr
+            td(align='left')
+                table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                tbody
+                    tr
+                    td
+                        a(href=`${url}`, target='_blank') Atualizar foto de perfil
+        p Se você precisar de ajuda para reservar sua próxima excursão, não hesite em entrar em contato comigo!
+        p - Murilo Sanches, CEO
