@@ -28,3 +28,10 @@ process.on('uncaughtRejection', (err) => {
     process.exit(1);
   });
 });
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM recebido, ❌​ Desligando e acabando as req restantes... ❌');
+  server.close(() => {
+    console.log('Processo finalizado');
+  });
+});
