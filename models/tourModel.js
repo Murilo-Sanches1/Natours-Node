@@ -147,10 +147,10 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Consulta demorou ${Date.now() - this.start} milissegundos!`);
-  next();
-});
+// tourSchema.post(/^find/, function (docs, next) {
+//   console.log(`Consulta demorou ${Date.now() - this.start} milissegundos!`);
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 
