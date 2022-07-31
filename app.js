@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const compression = require('compression');
 const cors = require('cors');
 
@@ -14,6 +15,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const reviewRouter = require('./routes/reviewRoutes');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -44,11 +46,24 @@ if (process.env.NODE_ENV === 'development') {
 
 // Middleware - Permite no máximo 100 requests por hora no mesmo IP
 const limiter = rateLimit({
-  max: 10,
+  max: 100,
   windowMs: 60 * 60 * 1000,
   message: 'Muitas requisições desse IP, por favor tente de novo em uma hora',
 });
 app.use('/api', limiter);
+
+/* red A rota do checkout diretamente aqui porque a resposta do Stripe não vai vir em JSON,
+Por isso definimos antes da middleware da linha 58 */
+// app.post(
+//   '/webhook-checkout',
+//   express.raw({ type: 'application/json' }),
+//   bookingController.webhookCheckout
+// );
+app.post(
+  '/webhook-checkout',
+  bodyParser.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
 
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
@@ -77,8 +92,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', viewRouter);
 // app.use('/api/v1/tours', cors(), tourRouter);
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);

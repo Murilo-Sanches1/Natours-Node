@@ -206,3 +206,9 @@ exports.getDistances = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.manageTours = (req, res) => {
+  res.status(200).render('login', {
+    title: 'Dashboard || Tours',
+  });
+};

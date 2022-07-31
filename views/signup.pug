@@ -1,0 +1,19 @@
+extends base
+
+block content
+    main.main
+        .login-form
+            h2.heading-secondary.ma-bt-lg Criar Conta
+            form.form.form--loginS
+                .form__group
+                    label.form__label(for='nameS') Nome
+                    input#nameS.form__input(type='text', placeholder='Nome', required)
+                    label.form__label(for='email') Endereço de Email
+                    input#emailS.form__input(type='email', placeholder='exemplo@exemplo.com', required)
+                .form__group.ma-bt-md
+                    label.form__label(for='password') Senha
+                    input#passwordS.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                    label.form__label(for='password') Confirme a senha
+                    input#passwordCS.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                .form__group
+                    button.btn.btn--green Cadastrar

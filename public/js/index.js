@@ -3,8 +3,10 @@
 import '@babel/polyfill';
 import { displayMap } from './leaflet';
 import { login, logout } from './login';
+import { signUp } from './signup';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
+import { showAlert } from './alert';
 
 const leafletjs = document.getElementById('map');
 if (leafletjs) {
@@ -21,7 +23,17 @@ if (loginForm) {
     login(email, password);
   });
 }
-
+const signUpForm = document.querySelector('.form--loginS');
+if (signUpForm) {
+  signUpForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('nameS').value;
+    const email = document.getElementById('emailS').value;
+    const password = document.getElementById('passwordS').value;
+    const passwordConfirm = document.getElementById('passwordCS').value;
+    signUp(name, email, password, passwordConfirm);
+  });
+}
 const logoutBtn = document.querySelector('.nav__el--logout');
 if (logoutBtn) logoutBtn.addEventListener('click', logout);
 
@@ -57,7 +69,10 @@ if (userPasswordForm)
 const bookBtn = document.getElementById('book-tour');
 if (bookBtn)
   bookBtn.addEventListener('click', (e) => {
-    e.target.textContent = 'Processando...'
+    e.target.textContent = 'Processando...';
     const tourId = e.target.dataset.tourId;
-    bookTour(tourId)
+    bookTour(tourId);
   });
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);

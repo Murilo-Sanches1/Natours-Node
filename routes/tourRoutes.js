@@ -49,4 +49,6 @@ router
     tourController.deleteTour
   );
 
+router.get('/tours', tourController.manageTours);
+
 module.exports = router;

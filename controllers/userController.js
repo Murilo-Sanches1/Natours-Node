@@ -52,6 +52,21 @@ exports.getMe = (req, res, next) => {
 
 exports.getAllUsers = factory.getAll(User);
 
+// exports.getAllUsers = (req, res, next) => {
+//   const users = factory.getAll(User);
+//   res.status(200).json({
+//     status: 'success',
+//     length: users.length,
+//     data: {
+//       data: users,
+//     },
+//   });
+//   // res.status(200).render('users', {
+//   //   title: 'Dashboard || Usuários',
+//   //   users,
+//   // });
+// };
+
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     return next(

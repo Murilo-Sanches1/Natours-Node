@@ -1,0 +1,47 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`img/icons.svg#icon-${icon}`)
+            | #{text}
+
+block content
+    main.main
+        .user-view
+            nav.user-view__menu
+                ul.side-nav
+                    +navItem('/perfil', 'Configurações', 'settings', true )
+                    +navItem('/reservas', 'Minhas reservas', 'briefcase')
+                    +navItem('#', 'Gerenciar avaliações', 'star')
+                    +navItem('#', 'Cobrança', 'credit-card')
+                
+                .admin-nav
+                    h5.admin-nav__heading Admin
+                    ul.side-nav
+                        +navItem('#', 'Gerenciar Tours', 'map')
+                        +navItem('/api/v1/users/usuarios', 'Gerenciar Usuários', 'users')
+                        +navItem('#', 'Gerenciar Avaliações', 'star')
+                        +navItem('#', 'Gerenciar Reservas', 'briefcase')
+
+    
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md= `Gerenciar Usuários ${users.length}`
+                    
+                .line &nbsp;
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Mudar senha
+                    form.form.form-user-password
+                        .form__group
+                            label.form__label(for='password-current') Senha atual
+                            input#password-current.form__input(type='password', placeholder='••••••••', required, minlength='4')
+                        .form__group
+                            label.form__label(for='password') Nova senha
+                            input#password.form__input(type='password', placeholder='••••••••', required, minlength='4')
+                        .form__group.ma-bt-lg
+                            label.form__label(for='password-confirm') Confirmar nova senha
+                            input#password-confirm.form__input(type='password', placeholder='••••••••', required, minlength='4')
+                        .form__group.right
+                            button.btn.btn--small.btn--green.btn--save-password Alterar senha
