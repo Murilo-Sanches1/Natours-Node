@@ -28,7 +28,7 @@ block content
                 .heading-box__detail
                     svg.heading-box__icon
                         use(xlink:href='/img/icons.svg#icon-clock')
-                    span.heading-box__text= `${tour.duration} days`
+                    span.heading-box__text= `${tour.duration} dias`
                 .heading-box__detail
                     svg.heading-box__icon
                         use(xlink:href='/img/icons.svg#icon-map-pin')
@@ -43,7 +43,7 @@ block content
                     - const date = tour.startDates[0].toLocaleString('pt-br', { month: 'long', year: 'numeric' })
                     +overviewBox('Próxima data', date, 'calendar')
                     +overviewBox('Dificuldade', tour.difficulty, 'Trending-up')
-                    +overviewBox('Participants', `${tour.maxGroupSize} people`, 'user')
+                    +overviewBox('Participants', `${tour.maxGroupSize} pessoas`, 'user')
                     +overviewBox('Avaliação', `${tour.ratingsAverage} / 5`, 'star')
 
                 .overview-box__group
