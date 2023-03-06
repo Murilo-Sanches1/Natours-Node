@@ -1,3 +1,5 @@
 # Natours
 
-Projeto feito usando NodeJS, Express, MongoDB, Mongoose, e Pug
+## Projeto feito usando NodeJS, Express, MongoDB, Mongoose e Pug
+
+### Migrando para ReactJS
